@@ -1,5 +1,10 @@
 const { app, BrowserWindow } = require('electron')
 let win;
+
+let production = true;
+
+const url = "http://localhost:4200";
+
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
@@ -8,13 +13,23 @@ function createWindow () {
     backgroundColor: '#ffffff',
     icon: `/home/michal/emot.png`
   })
-  win.loadURL(`file://${__dirname}/dist/index.html`)
-  //// uncomment below to open the DevTools.
-  win.webContents.openDevTools()
-  // Event when the window is closed.
-  win.on('closed', function () {
-    win = null
-  })
+
+  if(production === true){
+    win.loadURL(`file://${__dirname}/dist/index.html`)
+    // Event when the window is closed.
+    win.on('closed', function () {
+      win = null
+    })
+
+  } else{
+    win.loadURL(url);
+    //// uncomment below to open the DevTools.
+    win.webContents.openDevTools()
+    // Event when the window is closed.
+    win.on('closed', function () {
+      win = null
+    })
+  }
 }
 // Create window on electron intialization
 app.on('ready', createWindow)
